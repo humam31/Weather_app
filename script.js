@@ -12,7 +12,7 @@ form.addEventListener('submit', searchForLocation)
 let target = "Lahore";
 
 const fetchResults = async (targetLocation) => {
-    let url = `http://api.weatherapi.com/v1/current.json?key=653e77347ca44f70a1285747252307&q=${targetLocation}&aqi=no`;
+    const url = `https://api.openweathermap.org/data/2.5/weather?...`;
     const res = await fetch(url);
 
     const data = await res.json();
