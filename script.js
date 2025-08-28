@@ -12,17 +12,33 @@ form.addEventListener('submit', searchForLocation)
 let target = "Lahore";
 
 const fetchResults = async (targetLocation) => {
-    const url = `https://api.openweathermap.org/data/2.5/weather?...`;
-    const res = await fetch(url);
+    const apiKey = "YOUR_API_KEY"; // yahan apna API key daalo
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${targetLocation}&appid=${apiKey}&units=metric`;
 
-    const data = await res.json();
+    try {
+        const res = await fetch(url);
+        if (!res.ok) {
+            throw new Error("Location not found");
+        }
 
-    console.log(data);
+        const data = await res.json();
+        console.log(data);
 
-    let locationName = data.location.name
-    let time = data.location.localtime
-    let temp = data.current.temp_c
-    let condition = data.current.condition.text
+        let locationName = data.name;
+        let temp = data.main.temp; // Celsius (units=metric use kia hai)
+        let condition = data.weather[0].description;
+
+        // convert timestamp to local time
+        let time = new Date(data.dt * 1000).toLocaleString();
+
+        updateDetails(temp, locationName, time, condition);
+
+    } catch (error) {
+        console.error("Error fetching weather data:", error);
+        alert("Location not found or API issue");
+    }
+};
+
 
     updateDetails(temp, locationName, time, condition)
 }
@@ -83,6 +99,7 @@ switch(number){
      case 6:
     return 'Saturday';
 }
+
 
 
 
